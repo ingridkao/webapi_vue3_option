@@ -9,6 +9,13 @@
         <input type="text" v-model="search" @keyup="searchUser">
       </div>
 
+      <h6>6. Action</h6>
+      <div>
+        <input type="text" v-model="form.name" placeholder="name"> | <input type="text" v-model="form.job" placeholder="job">
+        <button @click="actionUser">Create</button>
+        <div v-if="formRes.id">新增成功: {{formRes}}</div>
+      </div>
+ 
       <h6>4. Desigh Users List</h6>
       <div v-if="axioLoading">Loading</div>
       <div v-else-if="axioError">Error</div>
@@ -34,6 +41,7 @@
 </template>
 <script>
 import axios from 'axios'
+const API_URL = 'https://reqres.in/api/users'
 export default {
   data(){
     return {
@@ -43,7 +51,12 @@ export default {
       per_page:5,
       total_pages: 0,
       search: "",
-      userData: []
+      userData: [],
+      form: {
+        name: '',
+        job: ''
+      },
+      formRes: {}
     }
   },
   created(){
@@ -55,10 +68,10 @@ export default {
   methods: {
     fetchUsers(){
       this.total_pages = 0
-      let fetchURL = 'https://reqres.in/api/users'
+      let qureyString = ''
       if(this.search){
         //一般來說search後端不該這樣寫，這個僅能做information
-        fetchURL = fetchURL + `/${this.search}`
+        qureyString = `/${this.search}`
         this.params = {}
       }else{
         this.params = {
@@ -66,13 +79,13 @@ export default {
           per_page: this.per_page
         }
       }
-      axios.get(fetchURL, { 
+      axios.get(API_URL + qureyString, { 
         params: this.params
       }).then((response) => {
         // console.log(response);
         if(response.status === 200 && response.data){
           this.axioError = false
-          const {data, total_pages} = response.data
+          const {data, total_pages, total} = response.data
           this.total_pages = total_pages
           this.userData = Array.isArray(data) ? data: [data]
         }else{
@@ -92,6 +105,26 @@ export default {
     },
     searchUser(){
       this.fetchUsers()
+    },
+    actionUser(){
+      this.formRes = {}
+      axios.post(API_URL, this.form).then((response) => {
+        this.formRes = response.data
+      }).catch((err) => {
+        console.log('錯誤:', err.response)
+      })
+      //Put
+      // axios.put(`${API_URL}/2`, this.form).then((response) => {
+      //   this.formRes = response.data
+      // }).catch((err) => {
+      //   console.log('錯誤:', err.response)
+      // })
+      //Delet
+      // axios.delete(`${API_URL}/2`, this.form).then((response) => {
+      //   console.log(response);
+      // }).catch((err) => {
+      //   console.log('錯誤:', err.response)
+      // })
     }
   }
 }

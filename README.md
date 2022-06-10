@@ -18,3 +18,4 @@
 3. 增加分頁
 4. 將user list資料整理排版
 5. 加入簡易的搜尋ID功能
+6. 加入CRUD，可惜Reqres API僅假資料
