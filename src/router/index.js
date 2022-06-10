@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import WeatherView from '../views/WeatherView.vue'
 import ReqresView from '../views/ReqresView.vue'
 import CRUDView from '../views/CRUDView.vue'
+import TdxView from '../views/TdxView.vue'
+import WeatherView from '../views/WeatherView.vue'
 
 export const routes = [
   {
@@ -27,6 +28,11 @@ export const routes = [
     path: '/crud',
     name: 'CRUD',
     component: CRUDView
+  },
+  {
+    path: '/tdx',
+    name: 'TDX-Bike',
+    component: TdxView
   },
   {
     path: '/weather',

@@ -19,3 +19,9 @@
 4. 將user list資料整理排版
 5. 加入簡易的搜尋ID功能
 6. 加入CRUD，可惜Reqres API僅假資料
+
+## TDX
+> 需求： 使用TDX的Open data來取得自行車資料
+### ＨOW:
+1. 閱讀API文件-swagger
+2. 確認API的必填項目
