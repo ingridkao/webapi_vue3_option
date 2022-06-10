@@ -64,7 +64,7 @@ nav {
 }
 
 .routerView{
-  margin: 15px 30px;
+  margin: 0px 30px;
   padding: 15px;
   background-color: #efefef;
 }

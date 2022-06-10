@@ -16,3 +16,5 @@
 1. 加入Loading
 2. 使用axios取得user清單，並將params設置到data中
 3. 增加分頁
+4. 將user list資料整理排版
+5. 加入簡易的搜尋ID功能
