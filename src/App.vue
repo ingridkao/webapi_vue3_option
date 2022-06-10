@@ -1,30 +1,71 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link 
+      v-for="(iten, index) in routers" 
+      :key="index" 
+      :to="iten.path"
+    >
+      {{iten.name}}
+    </router-link>
   </nav>
-  <router-view/>
+  <router-view class="routerView"/>
 </template>
+
+<script>
+// import {routes} from '@/router/index.js'
+// 要偷懶寫成這樣也是可以啦
+import {routes} from '@/router'
+export default {
+  data(){
+    return {
+      // routers: [
+      //   {path: "/", name: "Home"},
+      //   {path: "/about", name: "About"},
+      //   {path: "/weather", name: "Weather"}
+      // ]
+      routers: routes
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+}
+
+a {
+  padding: 5px;
+  color: #2c3e50;
+  &:hover{
+    color: #42b983;
+  }
 }
 
 nav {
   padding: 30px;
-
   a {
+    display: inline-block;
     font-weight: bold;
-    color: #2c3e50;
-
+    &:after{
+      content: '|';
+      padding: .5rem;
+    }
+    &:last-child:after{
+      display: none;
+    }
     &.router-link-exact-active {
       color: #42b983;
     }
   }
+}
+
+.routerView{
+  margin: 15px 30px;
+  padding: 15px;
+  background-color: #efefef;
 }
 </style>
