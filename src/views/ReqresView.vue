@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div>
     <a href="https://reqres.in/" target="_blank" rel="noreferrer noopenner">
       使用Reqres來試試看Get user
     </a>

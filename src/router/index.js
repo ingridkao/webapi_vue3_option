@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WeatherView from '../views/WeatherView.vue'
 import ReqresView from '../views/ReqresView.vue'
+import CRUDView from '../views/CRUDView.vue'
 
 export const routes = [
   {
@@ -21,6 +22,11 @@ export const routes = [
     path: '/reqres',
     name: 'Reqres',
     component: ReqresView
+  },
+  {
+    path: '/crud',
+    name: 'CRUD',
+    component: CRUDView
   },
   {
     path: '/weather',
