@@ -22,13 +22,18 @@
       <div v-if="axioLoading">Loading</div>
       <div v-else-if="axioError">Error</div>
       <div v-else-if="bikeStationData.length === 0">No data</div>
-      <div v-else class="userBox">
+      <div v-else class="bikeStaion">
         <div v-for="item in bikeStationData" :key="item.StationUID">
           <p>{{item.StationUID}}</p>
           <p>{{item.StationName.Zh_tw}}</p>
         </div>
       </div>
 
+      <h6>2. Show map</h6>
+      <a href="https://vue2-leaflet.netlify.app/quickstart/#hello-map" target="_blank" rel="noreferrer noopenner">
+        Sample
+      </a>
+      <div id="mapContainer" class="mapaBox"></div>
       <!-- <h6>2. Update pagination</h6>
       <div class="pagination">
         <button v-for="page in total_pages" :key="page" @click="selectPage(page)">
@@ -40,6 +45,9 @@
 </template>
 <script>
 import axios from 'axios'
+import L from "leaflet"
+import "leaflet/dist/leaflet.css"
+
 const API_URL = 'https://tdx.transportdata.tw/api/basic/'
 const CITY_OPTION = [
   "Taichung",
@@ -54,6 +62,14 @@ const CITY_OPTION = [
   "Tainan",
   "Chiayi"
 ]
+const MAP_CONFIG = {
+      zoom: 15,
+      center: [25.056, 121.50],
+      // url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}
+// console.log(latLng);
 export default {
   data(){
     return {
@@ -64,6 +80,8 @@ export default {
       cityOption: CITY_OPTION,
       city: "Taoyuan",
 
+      map: null,
+      ...MAP_CONFIG,
       page: 1,
       total_pages: 0
     }
@@ -72,10 +90,11 @@ export default {
     this.axioLoading = true
   },
   mounted(){
-    this.fetchUsers()
+    this.fetchBikeStation()
+    this.initMap()
   },
   methods: {
-    fetchUsers(){
+    fetchBikeStation(){
       this.params = {
         '$format' :JSON
       }
@@ -83,7 +102,7 @@ export default {
       axios.get(API_URL + 'v2/Bike/Station/' + this.city, { 
         params: this.params
       }).then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if(response.status === 200 && response.data){
           this.axioError = false
           this.bikeStationData = response.data
@@ -100,10 +119,16 @@ export default {
     },
     selectPage(page){
       this.page = page
-      this.fetchUsers()
+      this.fetchBikeStation()
     },
     selectCity(){
-      this.fetchUsers()
+      this.fetchBikeStation()
+    },
+    initMap(){
+      this.map = L.map("mapContainer").setView(this.center, this.zoom);
+      L.tileLayer(this.url, {
+        attribution: this.attribution
+      }).addTo(this.map)
     }
   }
 }
@@ -112,8 +137,9 @@ export default {
 .userContainer{
   min-height: 50vh;
 }
-.userBox {
-  min-height: 25vh;
+.bikeStaion {
+  max-height: 100px;
+  overflow: scroll;
   >div{
     display: inline-block;
     vertical-align: top;
@@ -122,15 +148,11 @@ export default {
     p{
       margin: 5px;
     }
-    .imgBox{
-      width: 128px;
-      height: 128px;
-      margin: auto;
-      img{
-        width: 100%;
-      }
-    }
   }
+}
+.mapaBox{
+  width: 100%;
+  height: 300px;
 }
 .pagination{
   button{
